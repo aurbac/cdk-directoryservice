@@ -5,7 +5,11 @@ import * as CdkDirectoryservice from '../lib/cdk-directoryservice-stack';
 test('Empty Stack', () => {
     const app = new cdk.App();
     // WHEN
-    const stack = new CdkDirectoryservice.CdkDirectoryserviceStack(app, 'MyTestStack');
+    const stack = new CdkDirectoryservice.CdkDirectoryserviceStack(app, 'MyTestStack', {
+        directoryServiceName: "aurbac.kabits.com",
+        directoryServiceShortName: "aurbackabits",
+        directoryServicePasswordSecret: "directoryServicePassword"
+    });
     // THEN
     expectCDK(stack).to(matchTemplate({
       "Resources": {}

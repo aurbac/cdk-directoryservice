@@ -1,14 +1,66 @@
-# Welcome to your CDK TypeScript project!
+# AWS Directory Service with CDK
 
-This is a blank project for TypeScript development with CDK.
+![AWS Directory Service with CDK](images/diagram.png)
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Requirements for development environment
 
-## Useful commands
+Work inside your AWS Cloud9 environment - [Create an EC2 Environment](https://docs.aws.amazon.com/cloud9/latest/user-guide/create-environment-main.html#create-environment-console)
 
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `npm run test`    perform the jest unit tests
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk synth`       emits the synthesized CloudFormation template
+Install the latest version of CDK.
+
+``` bash
+npm install -g aws-cdk --force
+```
+
+## Creating a basic secret to store the Direcotry Service password
+
+Go to the AWS Secrets Manager console at https://console.aws.amazon.com/secretsmanager/.
+
+Choose **Store a new secret**.
+
+In the **Select secret type** section, choose **Other type of secrets**, specify your password in **Plaintext** and choose **Next**.
+
+For **Secret name**, type `directoryServicePassword` and choose **Next**.
+
+For **Configure rotation** section, leave the default configuration and choose **Next**.
+
+Review your settings, and then choose **Store** secret to save.
+
+## Creating, initializing and deploying an AWS CDK project
+
+Create a directory for your CDK project.
+
+``` bash
+mkdir cdk-directoryservice
+cd cdk-directoryservice
+```
+
+To initialize your new CDK project use the cdk init command as follows.
+
+``` bash
+cdk init --language typescript
+```
+
+Install the AWS modules and all it’s dependencies into your project.
+
+``` bash
+npm install @aws-cdk/aws-ec2 @aws-cdk/aws-directoryservice @aws-cdk/aws-ssm @aws-cdk/aws-iam
+```
+
+Replace the following files with the samples codes linked.
+
+* [lib/cdk-directoryservice-stack.ts](lib/cdk-directoryservice-stack.ts)
+* [bin/cdk-directoryservice.ts](bin/cdk-directoryservice.ts) - Change the **directoryServicePasswordSecret** value with the name of your secret.
+* [test/cdk-directoryservice.test.ts](test/cdk-directoryservice.test.ts)
+
+Build the project.
+
+``` bash
+npm run build
+```
+
+Deploy the stack, **it will take a few minutes to complete**.
+
+``` bash
+cdk deploy
+```
