@@ -68,7 +68,7 @@ Deploy the stack, **it will take a few minutes to complete**.
 cdk deploy
 ```
 
-## Connect to your Windows File Share
+## Connect to your Windows Manage AD instance
 
 Open the Amazon EC2 console at https://console.aws.amazon.com/ec2.
 
