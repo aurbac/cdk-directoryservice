@@ -97,6 +97,7 @@ export class CdkDirectoryserviceStack extends cdk.Stack {
       subnetId: vpc.selectSubnets({subnetType: ec2.SubnetType.PUBLIC}).subnets[0].subnetId,
       securityGroupIds: [mySecurityGroup.securityGroupId],
       iamInstanceProfile: profile.ref,
+      tags: [ { key: 'Name', value: 'WindowsManageAD' } ],
       ssmAssociations: [
         { 
           documentName: document.ref, 
