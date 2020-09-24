@@ -20,6 +20,8 @@ Choose **Store a new secret**.
 
 In the **Select secret type** section, choose **Other type of secrets**, specify your password in **Plaintext** and choose **Next**.
 
+![Secret](images/secret.png)
+
 For **Secret name**, type `directoryServicePassword` and choose **Next**.
 
 For **Configure rotation** section, leave the default configuration and choose **Next**.
@@ -49,12 +51,12 @@ npm install @aws-cdk/aws-ec2 @aws-cdk/aws-directoryservice @aws-cdk/aws-ssm @aws
 
 Replace the following files with the samples codes linked.
 
-* [lib/cdk-directoryservice-stack.ts](lib/cdk-directoryservice-stack.ts)
-* [bin/cdk-directoryservice.ts](bin/cdk-directoryservice.ts)
- * Change the **directoryServiceName** value with the name for your directory service.
- * Change the **directoryServiceShortName** value with the short name for your directory service.
- * Change the **directoryServicePasswordSecret** value with the name of your secret.
-* [test/cdk-directoryservice.test.ts](test/cdk-directoryservice.test.ts)
+- [lib/cdk-directoryservice-stack.ts](lib/cdk-directoryservice-stack.ts)
+- [bin/cdk-directoryservice.ts](bin/cdk-directoryservice.ts)
+  - Change the **directoryServiceName** value with the name for your directory service.
+  - Change the **directoryServiceShortName** value with the short name for your directory service.
+  - Change the **directoryServicePasswordSecret** value with the name of your secret.
+- [test/cdk-directoryservice.test.ts](test/cdk-directoryservice.test.ts)
 
 Build the project.
 
@@ -78,4 +80,4 @@ Select your **WindowsManageAD** and choose **Connect**.
 
 Click on **Download Remote Desktop File** and **Close** the window.
 
-Ope your **.rdp** file, you'll see the Remote Desktop Connection dialog box, for **Username** type `aurbac.kabits.com\Admin` and type the password stored in AWS Secrets Manager.
+Ope your **.rdp** file, you'll see the Remote Desktop Connection dialog box, for **Username** type the directory service name with the Admin user as follows: `aurbac.kabits.com\Admin` and type the password stored in AWS Secrets Manager.
