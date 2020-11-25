@@ -16,12 +16,11 @@ export class CdkDirectoryserviceStack extends cdk.Stack {
 
     const vpc = new ec2.Vpc(this, "vpc", {
       cidr: "10.1.0.0/16",
-      natGateways: 1,
       subnetConfiguration: [
-        {  cidrMask: 24, subnetType: ec2.SubnetType.PUBLIC, name: "Public" },
-        {  cidrMask: 24, subnetType: ec2.SubnetType.PRIVATE, name: "Private" }
+        {  cidrMask: 22, subnetType: ec2.SubnetType.PUBLIC, name: "Public" },
+        {  cidrMask: 22, subnetType: ec2.SubnetType.PRIVATE, name: "Private" }
         ],
-      maxAzs: 3 // Default is all AZs in region
+      maxAzs: 2
     });
     
     const directoryServicePassword = cdk.SecretValue.secretsManager(props.directoryServicePasswordSecret);
@@ -49,8 +48,7 @@ export class CdkDirectoryserviceStack extends cdk.Stack {
     });
 
     const profile = new iam.CfnInstanceProfile(this, "windows_profile", {
-      roles: [ role.roleName  ],
-      instanceProfileName: "WindowsInstanceProfile"
+      roles: [ role.roleName  ]
     });
 
     const mySecurityGroup = new ec2.SecurityGroup(this, 'windows_security_group', {
@@ -58,7 +56,7 @@ export class CdkDirectoryserviceStack extends cdk.Stack {
       description: 'Allow rdp access to ec2 instances',
       allowAllOutbound: true   // Can be set to false
     });
-    //mySecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3389), 'allow rdp access from the world');
+    mySecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3389), 'allow rdp access from the world');
     
     const document = new ssm.CfnDocument(this, "windows_document_ad", { content: {
         "description": "Join instances to an AWS Directory Service domain.",
@@ -93,11 +91,11 @@ export class CdkDirectoryserviceStack extends cdk.Stack {
     
     const instance = new ec2.CfnInstance(this, "windows", { 
       imageId: windows.getImage(this).imageId,
-      instanceType: 't3.medium', 
+      instanceType: 't3.large', 
       subnetId: vpc.selectSubnets({subnetType: ec2.SubnetType.PUBLIC}).subnets[0].subnetId,
       securityGroupIds: [mySecurityGroup.securityGroupId],
       iamInstanceProfile: profile.ref,
-      tags: [ { key: 'Name', value: 'WindowsManageAD' } ],
+      tags: [ { key: 'Name', value: 'WindowsToManageAD' } ],
       ssmAssociations: [
         { 
           documentName: document.ref, 
